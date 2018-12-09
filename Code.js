@@ -21,7 +21,7 @@ function onOpen() {
  */
 function deleteAndPushAll() {
   console.log('Menu link clicked: Delete and push all')
-  if (validateAction()) {
+  if (validateAction() == true) {
     deleteAllEvents();
     pushAllEventsToCalendar();
   }
@@ -35,10 +35,9 @@ function deleteAndPushAll() {
  */
 function pushAll() {
   console.log('Menu link clicked: Push all')
-  if (validateAction()) {
+  if (validateAction() == true) {
     pushAllEventsToCalendar();
-  }
-  else {
+  } else {
     console.log('Sheet is not in the allowed list, skipping.')
   }
 }
@@ -49,9 +48,6 @@ function pushAll() {
 function runOnEdit(e) {
   console.log('runOnEdit trigger activated')
   if (validateAction() == false) {
-    return;
-  }
-  else {
     console.log('Sheet is not in the allowed list, skipping.')
     return;
   }
@@ -106,13 +102,14 @@ function deleteAllEvents() {
 * Push all events on the current sheet.
 */
 function pushAllEventsToCalendar() {
+  console.log('Pushing all events to calendar');
   var sheet = SpreadsheetApp.getActiveSheet();
   var dataRange = sheet.getDataRange();
   var data = dataRange.getValues();
   for (i in data) {
     // Skip the header row.
     if (parseInt(i) === 0) {
-      break;
+      continue;
     }
     var rowId = 1 + parseInt(i);
     console.log("processing row ", rowId)
