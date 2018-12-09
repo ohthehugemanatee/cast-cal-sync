@@ -8,7 +8,15 @@ function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('Custom')
   .addItem('Wipe and re-sync calendar', 'deleteAndPushAll')
+  .addItem('Get last row', 'getLastRow')
   .addToUi();
+}
+
+function getLastRow() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  var ui = SpreadsheetApp.getUi();
+  ui.alert(lastRow);
 }
 
 /**
