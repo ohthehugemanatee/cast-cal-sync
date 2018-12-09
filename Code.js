@@ -8,15 +8,7 @@ function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('Custom')
   .addItem('Wipe and re-sync calendar', 'deleteAndPushAll')
-  .addItem('Get last row', 'getLastRow')
   .addToUi();
-}
-
-function getLastRow() {
-  var sheet = SpreadsheetApp.getActiveSheet();
-  var lastRow = sheet.getLastRow();
-  var ui = SpreadsheetApp.getUi();
-  ui.alert(lastRow);
 }
 
 /**
@@ -93,12 +85,14 @@ function runOnEdit(e) {
 */
 function pushAllEventsToCalendar() {
   var sheet = SpreadsheetApp.getActiveSheet();
-  var lastRow = sheet.getLastRow();
-  var lastColumn = sheet.getLastColumn();
-  var dataRange = sheet.getRange("2018!A2:"+lastRow+lastColumn);
+  var dataRange = sheet.getDataRange();
   var data = dataRange.getValues();
   for (i in data) {
-    var rowId = 2 + parseInt(i);
+    // Skip the header row.
+    if (parseInt(i) === 0) {
+      break;
+    }
+    var rowId = 1 + parseInt(i);
     console.log("processing row ", rowId)
     var createdEvent = pushSingleEventToCalendar(sheet, data[i]);
     postEventPush(createdEvent, rowId);
