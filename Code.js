@@ -55,13 +55,14 @@ function getIndexByName(name){
 */
 function runOnEdit(e) {
   var spreadsheet = e.source;
-  var sheet = spreadsheet.getSheetByName('2018');
+  var sheet = spreadsheet.getActiveSheet();
   var changedRange = e.range;
   var rowNumber = changedRange.getRow()
   var numRows = changedRange.getNumRows();
   var numCols = sheet.getLastColumn();
   var dataRange = sheet.getRange(rowNumber, 1, numRows, numCols);
   var data = dataRange.getValues();
+  // Ignore changes to header row.
   if (rowNumber == 1) {
     return;
   }
