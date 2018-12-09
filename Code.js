@@ -16,15 +16,6 @@ function onOpen() {
 }
 
 /**
- * Check that we should be taking action.
- */
-function validateAction() {
-  // Returns TRUE if this sheet name is in the allowed sheets list.
-  var sheet = SpreadsheetApp.getActiveSheet();
-  return allowedSheets.indexOf(sheet.getName()) != -1;
-}
-
-/**
  * Delete all events on the Calendar and re-sync from the spreadsheet.
  */
 function deleteAndPushAll() {
@@ -35,38 +26,7 @@ function deleteAndPushAll() {
 }
 
 /**
- * Deletes all events on the calendar.
- */
-function deleteAllEvents() {
-  var cal = CalendarApp.getCalendarById(calendarId);
-  var from = new Date('01/01/2017');
-  var to = new Date('01/01/2050');
-  var events = cal.getEvents(from, to);
-  for (var i = 0; i < events.length; i++) {
-    events[i].deleteEvent();
-  }
-  Logger.log("Deleted " + events.length + " events.");
-  // Empty out existing calendar Ids.
-  var sheet = SpreadsheetApp.getActiveSheet();
-  var lastRow = sheet.getLastRow();
-  var eventIdCol = parseInt(getIndexByName('Calendar ID')) + 1;
-  var range = sheet.getRange(2, eventIdCol, lastRow);
-  range.clear();
-}
-
-
-/**
- * Get the column index by header row value.
- * NB: this is an array index; it starts from 0!
- */
-function getIndexByName(name){
-  var headers = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange().getValues().shift();
-  var colindex = headers.indexOf(name);
-  return colindex;
-}
-
-/**
-* Add an automatic single item sync on edit.
+* On edit, create/update/delete a calendar item.
 */
 function runOnEdit(e) {
   if (!validateAction()) {
@@ -97,6 +57,26 @@ function runOnEdit(e) {
       rowNumber++
     }
   }
+}
+
+/**
+ * Deletes all events on the calendar.
+ */
+function deleteAllEvents() {
+  var cal = CalendarApp.getCalendarById(calendarId);
+  var from = new Date('01/01/2017');
+  var to = new Date('01/01/2050');
+  var events = cal.getEvents(from, to);
+  for (var i = 0; i < events.length; i++) {
+    events[i].deleteEvent();
+  }
+  Logger.log("Deleted " + events.length + " events.");
+  // Empty out existing calendar Ids.
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  var eventIdCol = parseInt(getIndexByName('Calendar ID')) + 1;
+  var range = sheet.getRange(2, eventIdCol, lastRow);
+  range.clear();
 }
 
 /**
@@ -224,4 +204,23 @@ function pushSingleEventToCalendar(sheet, row) {
     }
   }
   return calEvent;
+}
+
+/**
+ * Get the column index by header row value.
+ * NB: this is an array index; it starts from 0!
+ */
+function getIndexByName(name){
+  var headers = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange().getValues().shift();
+  var colindex = headers.indexOf(name);
+  return colindex;
+}
+
+/**
+ * Check that we should be taking action.
+ */
+function validateAction() {
+  // Returns TRUE if this sheet name is in the allowed sheets list.
+  var sheet = SpreadsheetApp.getActiveSheet();
+  return allowedSheets.indexOf(sheet.getName()) != -1;
 }
