@@ -1,4 +1,5 @@
-var calendarId = "vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com"
+var calendarId = 'vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com'
+var sheetName = '2018'
 
 /**
 * Add an item to trigger bulk sync to the menu.
@@ -45,7 +46,7 @@ function deleteAllEvents() {
  * NB: this is an array index; it starts from 0!
  */
 function getIndexByName(name){
-  var headers = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('2018').getDataRange().getValues().shift();
+  var headers = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName).getDataRange().getValues().shift();
   var colindex = headers.indexOf(name);
   return colindex;
 }
