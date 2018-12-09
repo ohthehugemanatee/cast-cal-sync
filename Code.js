@@ -93,7 +93,6 @@ function pushAllEventsToCalendar() {
     var rowId = 2 + parseInt(i);
     console.log("processing row ", rowId)
     var createdEvent = pushSingleEventToCalendar(sheet, data[i]);
-    console.log({message: 'Created event', initialData: JSON.stringify(createdEvent) })
     postEventPush(createdEvent, rowId);
   }
 }
