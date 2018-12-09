@@ -1,4 +1,8 @@
-var calendarId = 'vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com'
+var calendarId = 'vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com';
+var allowedSheets = [
+  '2018',
+  '2019'
+];
 
 /**
 * Add an item to trigger bulk sync to the menu.
@@ -12,18 +16,29 @@ function onOpen() {
 }
 
 /**
+ * Check that we should be taking action.
+ */
+function validateAction() {
+  // Returns TRUE if this sheet name is in the allowed sheets list.
+  var sheet = SpreadsheetApp.getActiveSheet();
+  return allowedSheets.indexOf(sheet.getName()) != -1;
+}
+
+/**
  * Delete all events on the Calendar and re-sync from the spreadsheet.
  */
 function deleteAndPushAll() {
-  deleteAllEvents();
-  pushAllEventsToCalendar();
+  if (validateAction()) {
+    deleteAllEvents();
+    pushAllEventsToCalendar();
+  }
 }
 
 /**
  * Deletes all events on the calendar.
  */
 function deleteAllEvents() {
-    var cal = CalendarApp.getCalendarById(calendarId);
+  var cal = CalendarApp.getCalendarById(calendarId);
   var from = new Date('01/01/2017');
   var to = new Date('01/01/2050');
   var events = cal.getEvents(from, to);
@@ -54,6 +69,9 @@ function getIndexByName(name){
 * Add an automatic single item sync on edit.
 */
 function runOnEdit(e) {
+  if (!validateAction()) {
+    return;
+  }
   var spreadsheet = e.source;
   var sheet = spreadsheet.getActiveSheet();
   var changedRange = e.range;
