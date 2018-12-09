@@ -48,11 +48,12 @@ function pushAll() {
 */
 function runOnEdit(e) {
   console.log('runOnEdit trigger activated')
-  if (!validateAction()) {
+  if (validateAction() == false) {
     return;
   }
   else {
     console.log('Sheet is not in the allowed list, skipping.')
+    return
   }
   var spreadsheet = e.source;
   var sheet = spreadsheet.getActiveSheet();
