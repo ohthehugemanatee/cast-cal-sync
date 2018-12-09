@@ -31,6 +31,12 @@ function deleteAllEvents() {
     events[i].deleteEvent();
   }
   Logger.log("Deleted " + events.length + " events.");
+  // Empty out existing calendar Ids.
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  var eventIdCol = parseInt(getIndexByName('Calendar ID')) + 1;
+  var range = sheet.getRange(2, eventIdCol, lastRow);
+  range.clear();
 }
 
 
