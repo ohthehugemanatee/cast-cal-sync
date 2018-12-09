@@ -1,4 +1,4 @@
-const calendarId = "vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com"
+var calendarId = "vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com"
 
 /**
 * Add an item to trigger bulk sync to the menu.
@@ -146,12 +146,13 @@ function pushSingleEventToCalendar(sheet, row) {
   // Existing events have an ID saved.
   var eventId = row[getIndexByName('Calendar ID')];
   if (eventId) {
-    console.log('Updating existing event')
+    console.log('Id found in sheet. Updating existing event')
     // Load the existing event.
     try {
       var calEvent = cal.getEventById(eventId);
     }
     catch (e) {
+      console.log('Could not load Calendar event. Clearing entry from the sheet')
     // If the Id is invalid, return Cancelled to remove the value from the cell.
       return 'Cancelled';
     }
