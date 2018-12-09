@@ -12,6 +12,7 @@ function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('Custom')
   .addItem('Wipe and re-sync calendar', 'deleteAndPushAll')
+  .addItem('Re-sync calendar', 'pushAll')
   .addToUi();
 }
 
@@ -19,9 +20,26 @@ function onOpen() {
  * Delete all events on the Calendar and re-sync from the spreadsheet.
  */
 function deleteAndPushAll() {
+  console.log('Menu link clicked: Delete and push all')
   if (validateAction()) {
     deleteAllEvents();
     pushAllEventsToCalendar();
+  }
+  else {
+    console.log('Sheet is not in the allowed list, skipping.')
+  }
+}
+
+/**
+ * Delete all events on the Calendar and re-sync from the spreadsheet.
+ */
+function pushAll() {
+  console.log('Menu link clicked: Push all')
+  if (validateAction()) {
+    pushAllEventsToCalendar();
+  }
+  else {
+    console.log('Sheet is not in the allowed list, skipping.')
   }
 }
 
@@ -29,8 +47,12 @@ function deleteAndPushAll() {
 * On edit, create/update/delete a calendar item.
 */
 function runOnEdit(e) {
+  console.log('runOnEdit trigger activated')
   if (!validateAction()) {
     return;
+  }
+  else {
+    console.log('Sheet is not in the allowed list, skipping.')
   }
   var spreadsheet = e.source;
   var sheet = spreadsheet.getActiveSheet();
