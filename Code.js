@@ -53,7 +53,7 @@ function runOnEdit(e) {
   }
   else {
     console.log('Sheet is not in the allowed list, skipping.')
-    return
+    return;
   }
   var spreadsheet = e.source;
   var sheet = spreadsheet.getActiveSheet();
