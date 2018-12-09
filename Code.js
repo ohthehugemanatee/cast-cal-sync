@@ -1,3 +1,5 @@
+const calendarId = "vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com"
+
 /**
 * Add an item to trigger bulk sync to the menu.
 */
@@ -21,7 +23,7 @@ function deleteAndPushAll() {
  * Deletes all events on the calendar.
  */
 function deleteAllEvents() {
-    var cal = CalendarApp.getCalendarById("vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com");
+    var cal = CalendarApp.getCalendarById(calendarId);
   var from = new Date('01/01/2017');
   var to = new Date('01/01/2050');
   var events = cal.getEvents(from, to);
@@ -94,7 +96,7 @@ function pushAllEventsToCalendar() {
 /**
  * Post event Push cleanup function.
  */
-function postEventPush(createdEvent, rowId) {  
+function postEventPush(createdEvent, rowId) {
   if (createdEvent) {
     var sheet = SpreadsheetApp.getActiveSheet();
     var eventIdCol = parseInt(getIndexByName('Calendar ID')) + 1;
@@ -115,8 +117,8 @@ function postEventPush(createdEvent, rowId) {
 */
 function pushSingleEventToCalendar(sheet, row) {
   // The calendar to be modified.
-  var cal = CalendarApp.getCalendarById("vertesi.com_sa3qs1pe5kjjg7k29a4nvi4f6c@group.calendar.google.com");
-  
+  var cal = CalendarApp.getCalendarById(calendarId);
+
   // Create/update values for the event.
   var title = row[getIndexByName('Rehearsal or Performance')] + ": " + row[getIndexByName('City')];
   // Description combines a lot of fields.
@@ -136,11 +138,11 @@ function pushSingleEventToCalendar(sheet, row) {
     var fieldName = descFields[i];
     var fieldValue = row[getIndexByName(fieldName)];
     desc += fieldName + ": " + fieldValue + "\r\n";
-  }      
-  var date = row[getIndexByName('Date')];      
-  var loc = row[getIndexByName('City')]; 
+  }
+  var date = row[getIndexByName('Date')];
+  var loc = row[getIndexByName('City')];
   var status = row[getIndexByName('Status')];
-  
+
   // Existing events have an ID saved.
   var eventId = row[getIndexByName('Calendar ID')];
   if (eventId) {
@@ -161,10 +163,10 @@ function pushSingleEventToCalendar(sheet, row) {
       }
       return 'Cancelled';
     }
-    else { 
-      calEvent.setTitle(title);     
+    else {
+      calEvent.setTitle(title);
       calEvent.setDescription(desc);
-      calEvent.setAllDayDate(date);      
+      calEvent.setAllDayDate(date);
       calEvent.setLocation(loc);
       if (row[getIndexByName('Status')] != "Confirmed") {
         calEvent.setColor("8");
@@ -172,7 +174,7 @@ function pushSingleEventToCalendar(sheet, row) {
       else {
         calEvent.setColor("0");
       }
-      
+
     }
   }
   else { // New event.
