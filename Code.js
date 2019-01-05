@@ -174,59 +174,11 @@ function pushSingleEventToCalendar(sheet, row) {
   // Create/update values for the event.
   setTitle(calEvent, row);
   setDescription(calEvent, row);
-  
-  var date = row[getIndexByName('Date')];
-  var loc = row[getIndexByName('City')];
-  var status = row[getIndexByName('Status')];
-  var from = row[getIndexByName('Time: From')];
-  var until = row[getIndexByName('Time: To')];
-  // Set values on the event.
-  calEvent.setLocation(loc);
-  // Date could be from/until, or all day.
-  // If we have from/until, use those.
-  if (from && from != '' && until && until !== '') {
-    calEvent.setTime(new Date(date + "T" + from + ":00"), new Date(date + "T" + until + ":00"));
-  }
-  // Otherwise treat as an all day event.
-  else {
-    calEvent.setAllDayDate(new Date(date));
-  }
-  // Status is indicated by color.
-  if (row[getIndexByName('Status')] != "Confirmed") {
-    calEvent.setColor("8");
-  }
-  else {
-    calEvent.setColor("0");
-  }
+  setDate(calEvent, row);
+  setColor(calEvent, row);
   return calEvent;
 }
 
-function setTitle(event, row) {
-  var title = row[getIndexByName('Rehearsal or Performance')] + ": " + row[getIndexByName('City')];
-  event.setTitle(title);
-}
-
-function setDescription(event, row) {
-  // Description combines a lot of fields.
-  var desc = '';
-  var descFields = [
-    'Pianist',
-    'Soprano 1',
-    'Soprano 2',
-    'Mezzo / Soprano 3',
-    'Tenor',
-    'Baritone 2',
-    'Bass / Baritone 3',
-    'Babysitter',
-    'Notes'
-  ];
-  for (i in descFields) {
-    var fieldName = descFields[i];
-    var fieldValue = row[getIndexByName(fieldName)];
-    desc += fieldName + ": " + fieldValue + "\r\n";
-  }
-  event.setDescription(desc);
-}
 /**
  * Get the column index by header row value.
  * NB: this is an array index; it starts from 0!
