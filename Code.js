@@ -113,6 +113,7 @@ function processRange(dataRange) {
     console.log("processing row ", rowNumber)
     if (rowNumber == "1") {
       console.log("Cowardly refusing to process the header row.");
+      rowNumber++;
       continue;
     }
     var toProcess = data[i];
@@ -128,7 +129,7 @@ function processRange(dataRange) {
       postEventPush(createdEvent, rowNumber);
     }
     // Increment rowNumber.
-    rowNumber++
+    rowNumber++;
   }
 }
 
