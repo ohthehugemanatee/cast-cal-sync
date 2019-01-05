@@ -75,8 +75,10 @@ function runOnEdit(e) {
  */
 function deleteAllEvents() {
   var cal = CalendarApp.getCalendarById(calendarId);
-  var from = new Date('01/01/2017');
-  var to = new Date('01/01/2050');
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var thisYear = sheet.getName();
+  var from = new Date(thisYear + '-01-01T00:00:00');
+  var to = new Date(thisYear + '-12-31T23:59:59');
   var events = cal.getEvents(from, to);
   for (var i = 0; i < events.length; i++) {
     events[i].deleteEvent();
