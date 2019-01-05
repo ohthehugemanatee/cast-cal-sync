@@ -90,3 +90,38 @@ function setColor(event, row) {
     event.setColor("0");
   }
 }
+
+/**
+ * Set the guest list.
+ *
+ * @param {CalendarEvent} event
+ * @param {Array} row
+ */
+function setGuests(event, row) {
+  // Get the array of performer names / mail mappings.
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var nameMapRange = spreadsheet.getRangeByName('PerformerMails');
+  var nameMapArray = nameMapRange.getDisplayValues().filter(function (x) { return x[0] !== '' });
+  var nameMap = ObjApp.rangeToObjects(nameMapArray);
+  var availableNames = nameMap.map(function(mapping) {
+    return mapping.performer
+  });
+  // Get the intersection of the names for which we have emails, and the names on the row.
+  var invitees = ArrayLib.filterByText(row, -1, availableNames);
+  // If we don't have emails for any invitees, return empty handed.
+  if (invitees === []) {
+    console.log('No one to invite');
+    return;
+  }
+
+  // Loop through the invitees
+  for (var iindex in invitees) {
+    for(var mindex in nameMap) {
+      var guest = nameMap[mindex];
+      if (guest.performer == invitees[iindex]) {
+        console.log("Adding guest: " + guest.performer);
+        event.addGuest(guest.googleEmail);
+      }
+    }
+  }
+}

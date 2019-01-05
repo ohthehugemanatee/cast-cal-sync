@@ -1,10 +1,16 @@
 {
   "timeZone": "Europe/Paris",
   "dependencies": {
+    "libraries": [{
+      "userSymbol": "ArrayLib",
+      "libraryId": "1r9wNWbta3ebuYL4ENAdIp4UYKmyNiWf1AqsXYzfXduRHhTZEeTxS9MhZ",
+      "version": "23"
+    }, {
+      "userSymbol": "ObjApp",
+      "libraryId": "1BTKnGC-toLkpBBCWeuXUupoyi6JlgvM3UncFTJUyObMX2U-SOf8v9QTI",
+      "version": "5"
+    }]
   },
   "exceptionLogging": "STACKDRIVER",
-  "oauthScopes": [
-    "https://www.googleapis.com/auth/calendar",
-    "https://www.googleapis.com/auth/spreadsheets"
-  ]
+  "oauthScopes": ["https://www.googleapis.com/auth/calendar", "https://www.googleapis.com/auth/spreadsheets"]
 }

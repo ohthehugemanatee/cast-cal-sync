@@ -188,5 +188,6 @@ function pushSingleEventToCalendar(row) {
   setDescription(calEvent, row);
   setDate(calEvent, row);
   setColor(calEvent, row);
+  setGuests(calEvent, row);
   return calEvent;
 }
