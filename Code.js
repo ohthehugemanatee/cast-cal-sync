@@ -111,6 +111,10 @@ function processRange(dataRange) {
   var rowNumber = dataRange.getRow();
   for (i in data) {
     console.log("processing row ", rowNumber)
+    if (rowNumber == "1") {
+      console.log("Cowardly refusing to process the header row.");
+      continue;
+    }
     var toProcess = data[i];
     // Validate that we have at least date, title requirements, and status values.
     var date = toProcess[getIndexByName('Date')];
