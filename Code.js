@@ -6,7 +6,7 @@ var sheet = SpreadsheetApp.getActiveSheet();
 
 
 /**
-* Add an item to trigger bulk sync to the menu.
+* Add menu items.
 */
 function onOpen() {
   // Add a menu item for syncing EVERYTHING to the calendar.
@@ -33,7 +33,7 @@ function deleteAndPushAll() {
 }
 
 /**
- * Re-push all events from the spreadsheet.to the Calendar.
+ * Re-push all events from the spreadsheet to the Calendar.
  * Trigger: menu item.
  */
 function pushAll() {
@@ -177,23 +177,4 @@ function pushSingleEventToCalendar(sheet, row) {
   setDate(calEvent, row);
   setColor(calEvent, row);
   return calEvent;
-}
-
-/**
- * Get the column index by header row value.
- * NB: this is an array index; it starts from 0!
- */
-function getIndexByName(name){
-  var headers = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange().getValues().shift();
-  var colindex = headers.indexOf(name);
-  return colindex;
-}
-
-/**
- * Check that we should be taking action.
- */
-function validateAction() {
-  // Returns TRUE if this sheet name is in the allowed sheets list.
-  var sheet = SpreadsheetApp.getActiveSheet();
-  return allowedSheets.indexOf(sheet.getName()) != -1;
 }
