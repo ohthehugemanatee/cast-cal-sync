@@ -155,18 +155,21 @@ function pushSingleEventToCalendar(sheet, row) {
   var eventId = row[getIndexByName('Calendar ID')];
   try {
     // Try loading an existing event.
+    console.log("attempting to load cal ID ", eventId);
     var calEvent = cal.getEventById(eventId);
+    console.log(calEvent);
     if (calEvent === null) {
-      throw new Error;
+      throw new Error("getEventById returned null.");
     }
     console.log('Updating existing event')
     // If the spreadsheet says it's cancelled, delete the calendar event and return.
-    if (status == "Cancelled") {
+    if (row[getIndexByName('Status')] == "Cancelled") {
       console.log('Existing event cancelled')
       return 'Cancelled';
     }
   }
   catch (e) {
+    console.log(e);
     // If we couldn't load the event, create a stub.
     console.log('Could not load Calendar event. Creating a new one instead.');
     var calEvent = cal.createAllDayEvent('Stub event', new Date());
