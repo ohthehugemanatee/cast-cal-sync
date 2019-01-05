@@ -83,11 +83,12 @@ function deleteAllEvents() {
   for (var i = 0; i < events.length; i++) {
     events[i].deleteEvent();
   }
-  Logger.log("Deleted " + events.length + " events.");
+  console.log("Deleted " + events.length + " events between " + from + " and " + to);
   // Empty out existing calendar Ids.
   var sheet = SpreadsheetApp.getActiveSheet();
   var lastRow = sheet.getLastRow();
   var eventIdCol = parseInt(getIndexByName('Calendar ID')) + 1;
+  console.log(eventIdCol);
   var range = sheet.getRange(2, eventIdCol, lastRow);
   range.clear();
 }
@@ -124,7 +125,7 @@ function processRange(dataRange) {
     var status = toProcess[getIndexByName('Status')];
     if (date && date != null && city && city !== '' && type && type != '' && status && status != '') {
       // Create/Update the event.
-      var createdEvent = pushSingleEventToCalendar(sheet, toProcess);
+      var createdEvent = pushSingleEventToCalendar(toProcess);
       // Add event ID to the spreadsheet.
       postEventPush(createdEvent, rowNumber);
     }
@@ -140,6 +141,8 @@ function postEventPush(createdEvent, rowId) {
   if (createdEvent) {
     var sheet = SpreadsheetApp.getActiveSheet();
     var eventIdCol = parseInt(getIndexByName('Calendar ID')) + 1;
+    console.log("Row ID: ", rowId);
+    console.log("Event ID column: ", eventIdCol);
     // If the pushed event is cancelled, clear the value from the event Id field.
     if (createdEvent == 'Cancelled') {
       sheet.getRange(rowId, eventIdCol, 1, 1).clear();
@@ -155,7 +158,7 @@ function postEventPush(createdEvent, rowId) {
 /**
 * Push a single event to the calendar.
 */
-function pushSingleEventToCalendar(sheet, row) {
+function pushSingleEventToCalendar(row) {
   // The calendar to be modified.
   var cal = CalendarApp.getCalendarById(calendarId);
   // Get an Event to work with. Either load an existing one, or create a stub.
