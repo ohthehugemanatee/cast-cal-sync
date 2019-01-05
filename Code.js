@@ -141,8 +141,6 @@ function postEventPush(createdEvent, rowId) {
   if (createdEvent) {
     var sheet = SpreadsheetApp.getActiveSheet();
     var eventIdCol = parseInt(getIndexByName('Calendar ID')) + 1;
-    console.log("Row ID: ", rowId);
-    console.log("Event ID column: ", eventIdCol);
     // If the pushed event is cancelled, clear the value from the event Id field.
     if (createdEvent == 'Cancelled') {
       sheet.getRange(rowId, eventIdCol, 1, 1).clear();
@@ -152,6 +150,7 @@ function postEventPush(createdEvent, rowId) {
     }
     // Make sure the cell is updated right away in case the script is interrupted
     SpreadsheetApp.flush();
+    console.log('Finished processing event');
   }
 }
 
@@ -181,7 +180,7 @@ function pushSingleEventToCalendar(row) {
   catch (e) {
     console.log(e);
     // If we couldn't load the event, create a stub.
-    console.log('Could not load Calendar event. Creating a new one instead.');
+    console.log('Creating a new one instead.');
     var calEvent = cal.createAllDayEvent('Stub event', new Date());
   }
   // Create/update values for the event.
