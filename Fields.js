@@ -84,9 +84,9 @@ function setColor(event, row) {
   // Color indicates event status.
   var status = row[getIndexByName('Status')];
   if (status != "Confirmed") {
-    calEvent.setColor("8");
+    event.setColor("8");
   }
   else {
-    calEvent.setColor("0");
+    event.setColor("0");
   }
 }
