@@ -98,16 +98,41 @@ function setColor(event, row) {
  * @param {Array} row
  */
 function setGuests(event, row) {
-  // Get the array of performer names / mail mappings.
+  // Build an array of names mentioned in the Row.
+  var guestNames = [];
+  var guestFields = [
+    'Pianist',
+    'Soprano 1',
+    'Soprano 2',
+    'Mezzo / Soprano 3',
+    'Tenor',
+    'Baritone 2',
+    'Bass / Baritone 3'
+  ];
+  for (i in guestFields) {
+    var fieldName = guestFields[i];
+    var fieldValue = row[getIndexByName(fieldName)];  
+    // Split into multiple values if present.
+    var guests = fieldValue.split('/');
+    guestNames.push.apply(guestNames, guests);
+  }
+  console.log("Guest names", guestNames);
+  
+  // Get the array of performer name/mail mappings.
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var nameMapRange = spreadsheet.getRangeByName('PerformerMails');
+  // Filter out empty items.
   var nameMapArray = nameMapRange.getDisplayValues().filter(function (x) { return x[0] !== '' });
+  // Convert to Objects for easier handling.
   var nameMap = ObjApp.rangeToObjects(nameMapArray);
+  // Create a handy array of the names in our "addressbook".
   var availableNames = nameMap.map(function(mapping) {
     return mapping.performer
   });
+  
   // Get the intersection of the names for which we have emails, and the names on the row.
-  var invitees = ArrayLib.filterByText(row, -1, availableNames);
+  var invitees = ArrayLib.filterByText(guestNames, -1, availableNames);
+  console.log('Guest names in Addressbook: ', invitees);
   // If we don't have emails for any invitees, return empty handed.
   if (invitees === []) {
     console.log('No one to invite');
