@@ -111,13 +111,13 @@ function setGuests(event, row) {
   ];
   for (i in guestFields) {
     var fieldName = guestFields[i];
-    var fieldValue = row[getIndexByName(fieldName)];  
+    var fieldValue = row[getIndexByName(fieldName)];
     // Split into multiple values if present.
     var guests = fieldValue.split('/');
     guestNames.push.apply(guestNames, guests);
   }
   console.log("Guest names", guestNames);
-  
+
   // Get the array of performer name/mail mappings.
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var nameMapRange = spreadsheet.getRangeByName('PerformerMails');
@@ -129,7 +129,7 @@ function setGuests(event, row) {
   var availableNames = nameMap.map(function(mapping) {
     return mapping.performer
   });
-  
+
   // Get the intersection of the names for which we have emails, and the names on the row.
   var invitees = ArrayLib.filterByText(guestNames, -1, availableNames);
   console.log('Guest names in Addressbook: ', invitees);
