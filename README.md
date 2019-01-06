@@ -12,3 +12,5 @@ This is probably useful as an  example for others. This Apps Script pushes event
 * Always uses the active sheet as a basis for the menu links
 * Updates items as they are entered
 * Skips if the current sheet isn't named in the `allowedSheets` variable at top
+* Multiple musicians can be entered, separated by a `/` character
+* Enter musician names and email addresses in the 'PerformerMails' named range, to have them receive calendar invitations for their events.
